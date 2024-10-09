@@ -40,7 +40,7 @@ FZUteam 是一个专为大学生设计的团队协作平台。该平台旨在提
 - 使用支持的网络服务器（如 Live Server）打开 index.html 文件
 - 浏览器中访问相应的本地地址即可查看项目
 ## 项目结构
-
+```
 FZUteam/
 │
 ├── index.html
@@ -73,6 +73,7 @@ FZUteam/
 ├── chat.html
 ├── calendar.html
 └── profile.html
+```
 ## 目录说明
 
 - `index.html`: 项目主页
