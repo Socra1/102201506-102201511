@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>团队作业管理 - FZUteam</title>
+    <title>作业管理 - FZUteam</title>
     <link rel="stylesheet" href="../styles/main.css">
     <link rel="stylesheet" href="../styles/common.css">
     <link rel="stylesheet" href="../styles/teamworks.css">
@@ -13,10 +13,26 @@
         <nav id="mainNav"></nav>
     </header>
     <main id="mainContent">
-        <!-- 团队作业管理内容将通过 JavaScript 动态渲染 -->
+        <div class="container">
+            <h2>作业管理</h2>
+            <div class="teamwork-controls">
+                <button id="createTeamwork" class="btn-primary">创建新作业</button>
+                <input type="text" id="teamworkSearch" placeholder="搜索作业...">
+            </div>
+            <div class="teamwork-lists">
+                <div class="all-teamworks">
+                    <h3>所有作业</h3>
+                    <div id="allTeamworkList"></div>
+                </div>
+                <div class="my-teamworks">
+                    <h3>我的作业</h3>
+                    <div id="myTeamworkList"></div>
+                </div>
+            </div>
+        </div>
     </main>
 
-    <script src="../scripts/common.js"></script>
     <script src="../scripts/teamworks.js"></script>
+    <script src="../scripts/common.js"></script>
 </body>
 </html>

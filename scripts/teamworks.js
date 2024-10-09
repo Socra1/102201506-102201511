@@ -3,12 +3,24 @@
     const isNode = typeof window === 'undefined';
     const globalObject = isNode ? global : window;
 
+    // 新增：从 localStorage 获取用户信息
+    function getCurrentUser() {
+        if (!isNode) {
+            const userJson = localStorage.getItem('currentUser');
+            if (userJson) {
+                return JSON.parse(userJson);
+            }
+        }
+        // 如果没有找到用户信息，返回默认用户
+        return {
+            id: 1,
+            name: "张三",
+            role: "student"
+        };
+    }
+
     // 设置全局变量
-    globalObject.currentUser = {
-        id: 1,
-        name: "张三",
-        role: "student" // 可以是 'tutor' 或 'student'
-    };
+    globalObject.currentUser = getCurrentUser();
 
     // 作业状态
     const TEAMWORK_STATUSES = ['未完成', '已完成'];
@@ -248,8 +260,9 @@
         }
     };
 
-    // 初始化函数
+    // 修改初始化函数
     function initTeamworks() {
+        globalObject.currentUser = getCurrentUser(); // 确保使用最新的用户信息
         globalObject.renderTeamworkManagement();
         globalObject.displayTeamworks(globalObject.teamworks, 'allTeamworkList');
         globalObject.displayTeamworks(globalObject.teamworks.filter(teamwork => 
@@ -263,6 +276,12 @@
         document.addEventListener('DOMContentLoaded', initTeamworks);
     }
 
+    // 新增：更新用户信息的函数
+    globalObject.updateCurrentUser = function() {
+        globalObject.currentUser = getCurrentUser();
+        initTeamworks(); // 重新初始化以反映新的用户状态
+    };
+
     // 为了在全局范围内访问这些函数，我们需要将它们添加到 window 对象
     if (!isNode) {
         window.joinTeamwork = globalObject.joinTeamwork;
@@ -270,6 +289,6 @@
         window.viewTeamwork = globalObject.viewTeamwork;
         window.showCreateTeamworkModal = globalObject.showCreateTeamworkModal;
         window.createTeamwork = globalObject.createTeamwork;
-        window.applyForTeamwork = globalObject.applyForTeamwork;
+        window.updateCurrentUser = globalObject.updateCurrentUser;
     }
 })();

@@ -7,3 +7,8 @@ function renderNavigation() {
         </ul>
     `;
 }
+
+function handleLogout() {
+    localStorage.removeItem('currentUser');
+    window.location.href = 'login.html';
+}

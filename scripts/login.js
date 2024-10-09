@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
-    renderNavigation(); // 这是从 common.js 中调用的函数
+    renderNavigation();
     renderLoginForm();
 });
 
@@ -17,15 +17,15 @@ function renderNavigation() {
 function renderLoginForm() {
     const main = document.getElementById('mainContent');
     main.innerHTML = `
-        <div class="container">
+        <div class="container login-container">
             <h2>登录</h2>
-            <form id="loginForm" class="card">
+            <form id="loginForm" class="login-form">
                 <div class="form-group">
-                    <label for="email">电子邮箱:</label>
-                    <input type="email" id="email" name="email" required>
+                    <label for="username">用户名</label>
+                    <input type="text" id="username" name="username" required>
                 </div>
                 <div class="form-group">
-                    <label for="password">密码:</label>
+                    <label for="password">密码</label>
                     <input type="password" id="password" name="password" required>
                 </div>
                 <div class="form-group">
@@ -37,9 +37,9 @@ function renderLoginForm() {
                         <label for="roleTutor">导师</label>
                     </div>
                 </div>
-                <button type="submit" class="btn">登录</button>
+                <button type="submit" class="btn btn-primary">登录</button>
             </form>
-            <p>还没有账户? <a href="register.html">立即注册</a></p>
+            <p class="register-link">还没有账户? <a href="register.html">立即注册</a></p>
         </div>
     `;
 
@@ -49,32 +49,41 @@ function renderLoginForm() {
 function handleLogin(event) {
     event.preventDefault();
     
-    const email = document.getElementById('email').value;
+    const username = document.getElementById('username').value.trim();
     const password = document.getElementById('password').value;
     const role = document.querySelector('input[name="role"]:checked').value;
 
+    // 简单的表单验证
+    if (!username || !password) {
+        showError('请填写所有字段');
+        return;
+    }
+
     // 模拟登录过程
-    console.log('登录信息:', { email, password, role });
-    
-    // 模拟服务器响应
+    simulateLogin(username, password, role);
+}
+
+function simulateLogin(username, password, role) {
+    // 在实际应用中，这里应该发送请求到服务器进行验证
     setTimeout(() => {
-        // 创建用户数据对象
-        const userData = {
-            id: Math.floor(Math.random() * 1000), // 模拟用户ID
-            name: email.split('@')[0], // 使用邮箱的用户名部分作为名字
+        // 模拟登录成功
+        const user = {
+            id: 1, // 这里应该是从服务器获取的用户ID
+            name: username,
             role: role
         };
 
-        // 调用 setCurrentUser 函数
-        if (typeof window.setCurrentUser === 'function') {
-            window.setCurrentUser(userData);
-            console.log('当前用户已设置:', userData);
-        } else {
-            console.error('setCurrentUser 函数未定义');
-        }
+        // 将用户信息存储在 localStorage 中
+        localStorage.setItem('currentUser', JSON.stringify(user));
 
-        alert('登录成功!');
-        // 登录成功后重定向到首页
-        window.location.href = '../index.html';
-    }, 1000);
+        // 登录成功后
+        if (typeof window.updateCurrentUser === 'function') {
+            window.updateCurrentUser();
+        }
+        window.location.href = 'dashboard.html';
+    }, 1000); // 模拟网络延迟
+}
+
+function showError(message) {
+    alert(message); // 在实际应用中，你可能想使用更友好的错误显示方式
 }
